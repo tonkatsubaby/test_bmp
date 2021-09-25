@@ -5,7 +5,7 @@
 
 typedef unsigned char uint8_t;
 
-void print_ptr(unsigned char *ptr, int len)
+void print_ptr(uint8_t *ptr, int len)
 {
    for(int i = 0; i < len; i++)
    {
@@ -15,7 +15,7 @@ void print_ptr(unsigned char *ptr, int len)
    printf("\n");
 }
 
-void little_endian(unsigned char *ptr, int number)
+void little_endian(uint8_t *ptr, int number)
 {
    // array storing 8 bit unsigned chars
    // 32 bit number: 00000000 00000000 00000000 11000110
@@ -38,7 +38,7 @@ void little_endian(unsigned char *ptr, int number)
    ptr[0] = (number)       & 0xff;
 }
 
-void generate_bmp(int width, int height, unsigned char *pixel_array)
+void generate_bmp(int width, int height, uint8_t *pixel_array)
 {
    FILE *bmp = fopen("./images/bmp_test.bmp", "wb");
    const int HEADER_SIZE = 54;
@@ -49,21 +49,21 @@ void generate_bmp(int width, int height, unsigned char *pixel_array)
 
    printf("%d\n\n", padding_bytes);
 
-   uint8_t sig[2] = {0x42, 0x4d} ; // 'BM'
-   uint8_t file_size[4]          ; 
-   uint8_t unused[4]             ; // There's nothing for some reason
-   uint8_t data_offset[4]        ; 
-   uint8_t info_size[4]          ; //size of info header
-   uint8_t le_w[4]               ; 
-   uint8_t le_h[4]               ; 
-   uint8_t pln[2] = {0x01, 0x00} ; // always one
-   uint8_t bpp[2] = {0x18, 0x00} ; // bits per pixel
-   uint8_t compression[4]        ; // because 24bpp
-   uint8_t image_size[4]         ; // because compression
-   uint8_t x_ppm[4]              ; // temporary value
-   uint8_t y_ppm[4]              ; // temporary value
-   uint8_t colors_used[4]        ; // 24bpp
-   uint8_t important_colors[4]   ; // 24bpp
+   uint8_t sig[2] = {0x42, 0x4d}; // 'BM'
+   uint8_t file_size[4];          // size of file
+   uint8_t unused[4];             // There's nothing for some reason
+   uint8_t data_offset[4];        // useless
+   uint8_t info_size[4];          // size of info header
+   uint8_t le_w[4];               // width
+   uint8_t le_h[4];               // height
+   uint8_t pln[2] = {0x01, 0x00}; // always one
+   uint8_t bpp[2] = {0x18, 0x00}; // bits per pixel
+   uint8_t compression[4];        // because 24bpp
+   uint8_t image_size[4];         // because compression
+   uint8_t x_ppm[4];              // temporary value
+   uint8_t y_ppm[4];              // temporary value
+   uint8_t colors_used[4];        // 24bpp
+   uint8_t important_colors[4];   // 24bpp
 
    //sig
    little_endian(file_size,        padded_size);
@@ -81,7 +81,6 @@ void generate_bmp(int width, int height, unsigned char *pixel_array)
    little_endian(colors_used,      0);
    little_endian(important_colors, 0);
 
-   goto skip_comment;
    print_ptr(sig,              2);
    print_ptr(file_size,        4);
    print_ptr(unused,           4);
@@ -96,7 +95,6 @@ void generate_bmp(int width, int height, unsigned char *pixel_array)
    print_ptr(y_ppm,            4);
    print_ptr(colors_used,      4);
    print_ptr(important_colors, 4);
-   skip_comment:
 
    fwrite(sig,              1, sizeof(sig), bmp);
    fwrite(file_size,        1, sizeof(int), bmp);
@@ -122,7 +120,7 @@ void generate_bmp(int width, int height, unsigned char *pixel_array)
       {
          int index = (x + (y * width)) * 3;
 
-         unsigned char rgb_arr[3] = {
+         uint8_t rgb_arr[3] = {
             pixel_array[index + 2],
             pixel_array[index + 1],
             pixel_array[index]

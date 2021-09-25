@@ -20,8 +20,6 @@ int main(void)
       rgb_vals[(i * 3 + 2)] = 255;
    }
 
-   // line(0, 0, 400, 400, rgb_vals, WIDTH);
-   // draw_vec2(1, 1, 120, 100, rgb_vals, WIDTH);
    generate_tree(750, 60, 10, rgb_vals, WIDTH, HEIGHT);
 
    generate_bmp(WIDTH, HEIGHT, rgb_vals);

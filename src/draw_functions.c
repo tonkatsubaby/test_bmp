@@ -14,9 +14,9 @@ float radians(float angle)
 
 void line(int x1, int y1, int x2, int y2, uint8_t *arr, int width)
 {
-   // printf("A(%03d, %03d) -> B(%03d, %03d)\n",
-   //    x1, y1, x2, y2
-   // );
+   printf("A(%03d, %03d) -> B(%03d, %03d)\n",
+      x1, y1, x2, y2
+   );
 
    float points_num;
    int points_num_x = x2 - x1;
@@ -44,8 +44,6 @@ void line(int x1, int y1, int x2, int y2, uint8_t *arr, int width)
       int y = round(y1 + (t * points_num_y));
 
       int index = (x + (y * width)) * 3;
-
-      // printf("%f\n", t);
 
       arr[index]     = 0;
       arr[index + 1] = 0;
@@ -94,13 +92,8 @@ void generate_tree(float length, int angle, int iterations, uint8_t *arr, int wi
       int read_from = layer == 0 ? 0 : layer_branches;
       layer_branches = pow(2, layer);
 
-      int dir[2];
-      dir[0] = (angle * layer) % 360;
-      dir[1] = 360 + (-((angle * layer) % 360));
-
       for(int i = 0; i < layer_branches; i++)
       {
-         // dir[i % 2]
          write_to = layer_branches + i;
          float dist = pow(2, layer);
          if(dist == 0)
@@ -111,24 +104,6 @@ void generate_tree(float length, int angle, int iterations, uint8_t *arr, int wi
          {
             dist = length / dist;
          }
-
-         // printf("length: %f \t dir1: %d \t dir2: %d \t write_to: %d \t layer-branches: %d \t read_from: %d",
-         //    dist,
-         //    dir[0], dir[1],
-         //    write_to,
-         //    layer_branches,
-         //    read_from
-         // );
-
-         // int read_offset = floor(i / 2);
-
-         // printf("%d %d\n", read_from + read_offset, read_from);
-
-         // printf("iseven: %d read_from: %d true_read: %d\n",
-         //    write_to % 2,
-         //    read_from,
-         //    (int)floor(read_from + (float)i / 2)
-         // );
 
          int repeater = (int)floor(read_from + (float)i / 2);
 
@@ -175,25 +150,9 @@ void generate_tree(float length, int angle, int iterations, uint8_t *arr, int wi
                arr,
                width
             );
-
-            printf("%02d %03d\n", read_from + i, points_a[repeater]);
          }
-         // printf("x1: %d y1: %d \t x2: %d y2: %d\n",
-         //    points_x[read_from + i],
-         //    points_y[read_from + i],
-         //    points_x[write_to],
-         //    points_y[write_to]
-         // );
       }
    }
-
-   // for(int i = 0; i < point_arr_len; i++)
-   // {
-   //    printf("x: \t %d y: %d\n",
-   //       points_x[i],
-   //       points_y[i]
-   //    );
-   // }
 }
 
 #endif
