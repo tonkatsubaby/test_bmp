@@ -1,3 +1,4 @@
-test_bmp
+just works
 
-creates a bmp file and draws one of those trees on it
+1. make all
+2. ./main
